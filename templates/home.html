@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Student score predictor{% endblock %}
+{% block content %}
+<section class="page-width page-intro">
+    <p class="eyebrow">STUDENT SCORE ESTIMATE</p>
+    <h1>Student score predictor</h1>
+    <p>Fill in the student details below to get an estimated math score based on the project’s machine learning model.</p>
+</section>
+
+<section class="predict-layout page-width">
+    <form class="panel prediction-form" action="{{ url_for('predict_datapoint') }}" method="post">
+        <div class="panel-heading">
+            <div><h2>Student information</h2><p>All fields are required</p></div>
+        </div>
+        {% if error %}
+        <div class="form-alert" role="alert">{{ error }}</div>
+        {% endif %}
+        <div class="form-grid">
+            <label class="field">
+                <span>Gender</span>
+                <select name="gender" required>
+                    <option value="" disabled {% if not form_data.get('gender') %}selected{% endif %}>Select gender</option>
+                    <option value="female" {% if form_data.get('gender') == 'female' %}selected{% endif %}>Female</option>
+                    <option value="male" {% if form_data.get('gender') == 'male' %}selected{% endif %}>Male</option>
+                </select>
+            </label>
+            <label class="field">
+                <span>Race / ethnicity</span>
+                <select name="ethnicity" required>
+                    <option value="" disabled {% if not form_data.get('ethnicity') %}selected{% endif %}>Select group</option>
+                    {% for group in ['group A', 'group B', 'group C', 'group D', 'group E'] %}
+                    <option value="{{ group }}" {% if form_data.get('ethnicity') == group %}selected{% endif %}>{{ group|title }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label class="field">
+                <span>Parental education</span>
+                <select name="parental_level_of_education" required>
+                    <option value="" disabled {% if not form_data.get('parental_level_of_education') %}selected{% endif %}>Select education</option>
+                    {% for education in ["associate's degree", "bachelor's degree", "high school", "master's degree", "some college", "some high school"] %}
+                    <option value="{{ education }}" {% if form_data.get('parental_level_of_education') == education %}selected{% endif %}>{{ education|title }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label class="field">
+                <span>Lunch type</span>
+                <select name="lunch" required>
+                    <option value="" disabled {% if not form_data.get('lunch') %}selected{% endif %}>Select lunch type</option>
+                    <option value="standard" {% if form_data.get('lunch') == 'standard' %}selected{% endif %}>Standard</option>
+                    <option value="free/reduced" {% if form_data.get('lunch') == 'free/reduced' %}selected{% endif %}>Free / reduced</option>
+                </select>
+            </label>
+            <label class="field">
+                <span>Test preparation</span>
+                <select name="test_preparation_course" required>
+                    <option value="" disabled {% if not form_data.get('test_preparation_course') %}selected{% endif %}>Select course status</option>
+                    <option value="none" {% if form_data.get('test_preparation_course') == 'none' %}selected{% endif %}>Not completed</option>
+                    <option value="completed" {% if form_data.get('test_preparation_course') == 'completed' %}selected{% endif %}>Completed</option>
+                </select>
+            </label>
+            <label class="field">
+                <span>Reading score <small>out of 100</small></span>
+                <input type="number" name="reading_score" min="0" max="100" step="1" value="{{ form_data.get('reading_score', '') }}" placeholder="e.g. 78" required>
+            </label>
+            <label class="field">
+                <span>Writing score <small>out of 100</small></span>
+                <input type="number" name="writing_score" min="0" max="100" step="1" value="{{ form_data.get('writing_score', '') }}" placeholder="e.g. 82" required>
+            </label>
+        </div>
+        <button class="button button-primary submit-button" type="submit">Predict math score</button>
+        <p class="form-disclaimer">Your estimate is for learning and demonstration purposes only.</p>
+    </form>
+
+    <aside class="panel result-panel" aria-live="polite">
+        <div class="panel-heading">
+            <div><h2>Estimated score</h2><p>Your model prediction</p></div>
+        </div>
+        {% if results is not none %}
+        <div class="score-display">
+            <p class="score-value">{{ results|round|int }} <span>/ 100</span></p>
+            <p class="score-label">Estimated math score</p>
+            <p class="score-message">Based on the student details you provided.</p>
+        </div>
+        <div class="result-notice"><p><strong>Note:</strong> This is an estimate, not a guarantee. Actual performance depends on many factors.</p></div>
+        {% else %}
+        <div class="empty-result">
+            <h3>Your result will appear here</h3>
+            <p>Complete the form to see a personalized score estimate.</p>
+        </div>
+        <div class="result-notice"><p><strong>Note:</strong> Predictions are for educational exploration, not a final assessment.</p></div>
+        {% endif %}
+    </aside>
+</section>
+
+<section class="project-strip page-width">
+    <div><p class="eyebrow">ABOUT THIS PROJECT</p><h2>Learning data, made approachable.</h2><p>A student performance regression demo built to explore how data and machine learning can support understanding.</p></div>
+    <div class="project-stat"><strong>1,000</strong><span>student records</span></div>
+    <div class="project-stat"><strong>Math score</strong><span>estimated outcome</span></div>
+</section>
+{% endblock %}

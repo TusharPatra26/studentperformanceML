@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Understand performance{% endblock %}
+{% block content %}
+<section class="hero page-width">
+    <div class="hero-copy">
+        <p class="eyebrow">STUDENT PERFORMANCE PROJECT</p>
+        <h1>Understand performance.<br><span>Predict potential.</span></h1>
+        <p class="hero-description">Explore how student backgrounds and learning habits relate to math outcomes. Get an instant estimate from a machine learning model.</p>
+        <div class="hero-actions">
+            <a class="button button-primary" href="{{ url_for('predict_datapoint') }}">Start a prediction</a>
+            <a class="button button-quiet" href="{{ url_for('about') }}">About the project</a>
+        </div>
+        <p class="hero-note">A model estimate for learning and exploration, not a guarantee.</p>
+    </div>
+    <aside class="hero-summary">
+        <p class="summary-label">AT A GLANCE</p>
+        <h2>Student performance, explored through data.</h2>
+        <p>The model uses academic and background details to estimate a math score.</p>
+        <dl class="summary-facts">
+            <div><dt>Student records</dt><dd>1,000</dd></div>
+            <div><dt>Input details</dt><dd>7</dd></div>
+            <div><dt>Estimated outcome</dt><dd>Math score</dd></div>
+        </dl>
+    </aside>
+</section>
+
+<section class="feature-grid page-width" aria-label="Project features">
+    <article class="feature-card">
+        <h2>Smart predictions</h2>
+        <p>Use a trained regression model to estimate a student's math score from a few details.</p>
+    </article>
+    <article class="feature-card">
+        <h2>Meaningful insights</h2>
+        <p>See how academic preparation and student context help shape a prediction.</p>
+    </article>
+    <article class="feature-card">
+        <h2>Simple inputs</h2>
+        <p>Enter student information in a clear form and get an estimate in seconds.</p>
+    </article>
+</section>
+
+<section class="how-section page-width">
+    <div class="section-heading">
+        <p class="eyebrow">THE PROCESS</p>
+        <h2>How it works</h2>
+        <p>From student details to an estimated score—in just a few steps.</p>
+    </div>
+    <div class="steps-grid">
+        <article class="step-card"><span class="step-number">01</span><h3>Enter student details</h3><p>Share academic and preparation details.</p></article>
+        <article class="step-card"><span class="step-number">02</span><h3>Run the model</h3><p>The model processes the information.</p></article>
+        <article class="step-card"><span class="step-number">03</span><h3>Review the estimate</h3><p>Get a predicted math score to explore.</p></article>
+    </div>
+</section>
+{% endblock %}

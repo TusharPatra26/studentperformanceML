@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}About the project{% endblock %}
+{% block content %}
+<section class="page-width page-intro about-intro">
+    <p class="eyebrow">ABOUT EDUPREDICT</p>
+    <h1>How we chose the model</h1>
+    <p>We compared several regression algorithms using the same training and held-out test data, then selected the model with the strongest test-set R² score.</p>
+</section>
+
+{% if model_report %}
+<section class="model-summary page-width">
+    <div class="selected-model">
+        <p class="eyebrow">SELECTED MODEL</p>
+        <h2>{{ model_report.selected_model }}</h2>
+        <p>Chosen because it achieved the highest R² among the models evaluated on the held-out test set.</p>
+    </div>
+    <div class="r2-highlight">
+        <span>Test-set R²</span>
+        <strong>{{ "%.4f"|format(model_report.r2_score) }}</strong>
+        <small>{{ "%.2f"|format(model_report.r2_score * 100) }}% of score variance explained</small>
+    </div>
+</section>
+
+<section class="model-comparison page-width">
+    <div class="comparison-heading">
+        <div>
+            <p class="eyebrow">MODEL COMPARISON</p>
+            <h2>Results on the same test split</h2>
+        </div>
+        <p>{{ model_report.test_samples }} records in the held-out test set</p>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Model</th><th>Test R²</th><th>Comparison</th></tr></thead>
+            <tbody>
+                {% for name, score in model_report.candidate_scores|dictsort(by='value', reverse=true) %}
+                <tr class="{{ 'chosen-model' if name == model_report.selected_model else '' }}">
+                    <td>{{ name }}{% if name == model_report.selected_model %}<span class="selected-tag">Selected</span>{% endif %}</td>
+                    <td>{{ "%.4f"|format(score) }}</td>
+                    <td><span class="score-track"><span style="width: {{ [score * 100, 100]|min }}%"></span></span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="metric-note"><strong>How to interpret R²:</strong> 0.8804 means the model explains about 88% of the variation in math scores in this test set. It is not the percentage of predictions that are correct.</p>
+</section>
+{% else %}
+<section class="page-width report-missing">
+    <h2>Model evaluation report not found</h2>
+    <p>Run the training pipeline to generate the model comparison and test-set R² shown here.</p>
+</section>
+{% endif %}
+
+<section class="about-grid page-width">
+    <article class="about-card">
+        <h2>How we compared models</h2>
+        <p>We trained seven regression models, tuned selected hyperparameters with randomized search, and compared their R² scores against the same 20% held-out test split.</p>
+    </article>
+    <article class="about-card">
+        <h2>Why this model</h2>
+        <p>Linear Regression gave the strongest result in the current evaluation. Its simple, interpretable form is also a useful baseline for this student-score prediction project.</p>
+    </article>
+    <article class="about-card">
+        <h2>Use the estimate thoughtfully</h2>
+        <p>The score is an estimate based on patterns in the available dataset. It should support exploration—not replace educator judgment or be treated as a guarantee.</p>
+    </article>
+</section>
+
+<section class="about-callout page-width">
+    <div><p class="eyebrow">READY TO EXPLORE?</p><h2>Try a student score estimate.</h2></div>
+    <a class="button button-primary" href="{{ url_for('predict_datapoint') }}">Try a prediction</a>
+</section>
+{% endblock %}
