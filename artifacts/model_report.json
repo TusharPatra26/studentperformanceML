@@ -3,12 +3,12 @@
   "r2_score": 0.8804332983749565,
   "test_samples": 200,
   "candidate_scores": {
-    "Random Forest": 0.8502212561082468,
-    "Decision Tree": 0.7274371821299064,
-    "Gradient Boosting": 0.8787464167139746,
+    "Random Forest": 0.8506844356303913,
+    "Decision Tree": 0.7460532328641925,
+    "Gradient Boosting": 0.86948104491427,
     "Linear Regression": 0.8804332983749565,
     "XGBRegressor": 0.8570029877570555,
     "CatBoosting Regressor": 0.8613734525258083,
-    "AdaBoost Regressor": 0.8511364415702819
+    "AdaBoost Regressor": 0.8513647263255193
   }
 }
